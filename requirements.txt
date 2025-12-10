@@ -1,2 +1,7 @@
 streamlit
-pandas
+langchain
+pypdf
+python-dotenv
+google-genai
+chromadb
+tiktoken
