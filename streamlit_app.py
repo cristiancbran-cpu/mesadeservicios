@@ -9,7 +9,7 @@ from langchain_chroma import Chroma
 from langchain_community.document_loaders import PyPDFLoader
 
 # NUEVAS IMPORTACIONES para resolver el error de 'ConversationalRetrievalChain'
-from langchain.chains import create_history_aware_retriever
+from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
