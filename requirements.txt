@@ -1,13 +1,15 @@
 streamlit
-# Paquetes base
-langchain-core
+python-dotenv
+tiktoken
+
+# Dependencias base de LangChain
+langchain            # Necesario para el nuevo 'langchain.chains'
+langchain-core       # Necesario para ChatPromptTemplate, MessagesPlaceholder, HumanMessage, AIMessage
 langchain-community
-langchain
-# Paquetes específicos del proyecto
 langchain-text-splitters
 langchain-chroma
-langchain-google-genai
-pypdf
-python-dotenv
+
+# Dependencias específicas de Google
+langchain-google-genai 
+pypdf 
 chromadb
-tiktoken
