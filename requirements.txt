@@ -2,14 +2,16 @@ streamlit
 python-dotenv
 tiktoken
 
-# Dependencias base de LangChain
-langchain            # Necesario para el nuevo 'langchain.chains'
-langchain-core       # Necesario para ChatPromptTemplate, MessagesPlaceholder, HumanMessage, AIMessage
-langchain-community
-langchain-text-splitters
-langchain-chroma
+# Dependencias base y utilidades de LangChain
+langchain            # NECESARIO para que existan las funciones 'create_history_aware_retriever'
+langchain-core       # Necesario para el manejo de prompts y mensajes (HumanMessage, etc.)
+langchain-community  # Necesario para PyPDFLoader (Document Loaders)
 
-# Dependencias específicas de Google
-langchain-google-genai 
+# Dependencias específicas de la aplicación RAG
+langchain-text-splitters # Para RecursiveCharacterTextSplitter
+langchain-chroma         # Para el vectorstore Chroma
+langchain-google-genai   # Para el LLM (Gemini) y Embeddings
+
+# El backend real de los vectorstores
 pypdf 
 chromadb
