@@ -2,7 +2,8 @@ import streamlit as st
 import os
 from dotenv import load_dotenv # 1. Necesario para leer la clave en desarrollo local
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+#from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.chains import ConversationalRetrievalChain
 from langchain.vectorstores import Chroma
 from langchain.document_loaders import PyPDFLoader
