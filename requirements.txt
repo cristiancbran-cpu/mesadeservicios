@@ -1,11 +1,11 @@
 streamlit
-# Las librerías base de LangChain que ahora están separadas
+# Paquetes base
 langchain-core
 langchain-community
+langchain
+# Paquetes específicos del proyecto
 langchain-text-splitters
 langchain-chroma
-
-# Librerías específicas del proyecto
 langchain-google-genai
 pypdf
 python-dotenv
