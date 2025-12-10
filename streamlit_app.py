@@ -1,14 +1,17 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
+
 # Importaciones de LangChain específicas del modelo Gemini
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-# Importaciones corregidas: Se usa la nueva estructura (cambiando '.' por '_') o los nombres de módulos correctos
-# -------------------------------------------------------------------------------------------------------
-from langchain_text_splitters import RecursiveCharacterTextSplitter  # <-- CORREGIDO: Nuevo nombre del módulo
-from langchain.chains import ConversationalRetrievalChain            # <-- Esta línea se mantiene así por ahora
-from langchain_chroma import Chroma                                  # <-- CORREGIDO: Nuevo nombre del módulo
-from langchain_community.document_loaders import PyPDFLoader        # <-- CORREGIDO: Nuevo nombre del módulo
+
+# Importaciones CORREGIDAS usando la nueva estructura modular:
+# -----------------------------------------------------------
+from langchain_text_splitters import RecursiveCharacterTextSplitter # <-- Corrige el error de 'text_splitter'
+from langchain.chains import ConversationalRetrievalChain            # <-- Esta línea se mantiene así
+from langchain_chroma import Chroma                                  # <-- Corrige el error de 'vectorstores/Chroma'
+from langchain_community.document_loaders import PyPDFLoader        # <-- Corrige el error de 'document_loaders'
+
 import tempfile
 
 # ----------------------------------------------------
@@ -17,7 +20,7 @@ import tempfile
 load_dotenv() 
 
 # Verificar que la clave está disponible
-if not os.getenv("AIzaSyBzRS6rFBEVSBdywoh8MAqW-XVeNCv9dF4"):
+if not os.getenv("GOOGLE_API_KEY"):
     st.error("Error: La clave GOOGLE_API_KEY no está configurada. Por favor, añádela a un archivo '.env' o a los 'Secrets' de Streamlit Cloud.")
     st.stop()
 
