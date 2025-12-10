@@ -1,34 +1,47 @@
 import streamlit as st
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv # YA NO NECESARIO: Estamos pidiendo la clave directamente
 
 # Importaciones de LangChain específicas del modelo Gemini
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 
-# Importaciones CORREGIDAS usando la nueva estructura modular:
-# -----------------------------------------------------------
-from langchain_text_splitters import RecursiveCharacterTextSplitter # <-- Corrige el error de 'text_splitter'
-from langchain.chains import ConversationalRetrievalChain            # <-- Esta línea se mantiene así
-from langchain_chroma import Chroma                                  # <-- Corrige el error de 'vectorstores/Chroma'
-from langchain_community.document_loaders import PyPDFLoader        # <-- Corrige el error de 'document_loaders'
+# Importaciones corregidas a la nueva estructura modular de LangChain
+from langchain_text_splitters import RecursiveCharacterTextSplitter 
+from langchain.chains import ConversationalRetrievalChain 
+from langchain_chroma import Chroma
+from langchain_community.document_loaders import PyPDFLoader
 
 import tempfile
 
 # ----------------------------------------------------
-# PASO 3: Cargar variables de entorno (incluye GOOGLE_API_KEY)
+# PASO 3: Vincular la Clave de API (Opción 2: Solicitud al Usuario)
 # ----------------------------------------------------
-load_dotenv() 
 
-# Verificar que la clave está disponible
-if not os.getenv("GOOGLE_API_KEY"):
-    st.error("Error: La clave GOOGLE_API_KEY no está configurada. Por favor, añádela a un archivo '.env' o a los 'Secrets' de Streamlit Cloud.")
-    st.stop()
+# Intentar leer la clave de una variable de entorno (por si se usan Secretos de Streamlit Cloud)
+api_key = os.getenv("GOOGLE_API_KEY") 
+
+# Si la clave no está disponible en el entorno, pedirla al usuario en la barra lateral
+if not api_key:
+    with st.sidebar:
+        st.warning("⚠️ Introduce tu clave de API de Gemini para continuar.")
+        # Usar type="password" para ocultar la clave
+        api_key_input = st.text_input("Clave de API de Google Gemini", type="password")
+    
+    if api_key_input:
+        api_key = api_key_input
+    else:
+        # Detener la ejecución si la clave no está disponible y no ha sido ingresada
+        st.info("Introduce la clave de API en la barra lateral y presiona 'Procesar Documento'.")
+        st.stop()
+
+# Si la clave está disponible (ya sea del entorno o ingresada), la configuramos para el resto del script
+os.environ["GOOGLE_API_KEY"] = api_key
 
 
 # --- Configuración de Streamlit ---
 st.set_page_config(page_title="Chat con Documentos (RAG + Gemini)", layout="wide")
 st.title("📄 Chat Asistente para Documentos")
-st.caption("Sube un PDF/Documento y haz preguntas basadas en su contenido.")
+st.caption("Sube un PDF y haz preguntas basadas en su contenido.")
 
 # --- Funciones de RAG ---
 
@@ -62,10 +75,7 @@ def process_documents(uploaded_file):
         )
         texts = text_splitter.split_documents(documents)
 
-        # -----------------------------------------------------------------------------------------
-        # PASO 4 (Implícito): Inicialización de Embeddings (Usa GOOGLE_API_KEY del entorno)
-        # -----------------------------------------------------------------------------------------
-        # Esta línea usa la clave cargada por load_dotenv() o Streamlit Secrets
+        # Inicialización de Embeddings (LangChain lo busca en os.environ)
         embeddings = GoogleGenerativeAIEmbeddings(model="text-embedding-004") 
         
         # Creación de Vector Store
@@ -87,10 +97,7 @@ def get_conversation_chain(retriever):
     """
     Crea la cadena de conversación RAG (LLM + Retriever).
     """
-    # -----------------------------------------------------------------------------------------
-    # PASO 5 (Implícito): Inicialización del LLM (Usa GOOGLE_API_KEY del entorno)
-    # -----------------------------------------------------------------------------------------
-    # Esta línea usa la clave cargada por load_dotenv() o Streamlit Secrets
+    # Inicialización del LLM (LangChain lo busca en os.environ)
     llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3)
     
     # Configuración de la cadena RAG
